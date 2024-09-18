@@ -1,6 +1,9 @@
-year=Integer(gets.chomp)
-def isleapyear(year)
-   year%4==0 &&year%100!=0|| year%400==0;
+
+def leap_year?(year)
+   year % 4 == 0 && year % 100 != 0|| year % 400 == 0;
 end 
-print isleapyear(year)
+
+p "Enter Year:"
+year = Integer(gets.chomp)
+print leap_year?(year)
 
