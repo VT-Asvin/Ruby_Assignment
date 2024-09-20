@@ -1,4 +1,4 @@
-class Calculator
+class Calculatore
   attr_accessor :num1,:num2
   
   def initialize(num1,num2)
