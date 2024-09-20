@@ -15,14 +15,14 @@ class Array
 end
 class String
    
-   def reverse
-      puts "Asvin"
+   # def reverse
+   #    puts "Asvin"
       
-   end
+   # end
 
 end
-puts 1.to_s
-puts [1,2,3].reverse
-s=String.new
-s.reverse
-"Asvin".reverse
+# puts 1.to_s
+# puts [1,2,3].reverse
+s=String.new("hai")
+puts "#{s.reverse}"
+# "Asvin".reverse
