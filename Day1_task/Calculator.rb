@@ -17,6 +17,7 @@ class Calculator
   end
   
   def divide
+    return "Error: Division by zero" if @num2.zero?
     @num1 / @num2
   end
   
