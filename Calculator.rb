@@ -1,4 +1,4 @@
-class Calculatore
+class Calculators
   attr_accessor :num1,:num2
   gfh
   def initialize(num1,num2)
