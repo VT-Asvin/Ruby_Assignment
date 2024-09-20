@@ -1,6 +1,6 @@
 
 while true
-	  print "1.convert celsius to fahrenheit
+    print "1.convert celsius to fahrenheit
            2.convert fahrenheit to celsius
            3.exit"
     option=Integer(gets.chomp)
@@ -12,7 +12,7 @@ while true
     	print "enter the fahrenheit"
     	f=Integer(gets.chomp)
     	print "The temperature is #{5/9*(f-32)}"
-		end
+    end
 
 end
 
