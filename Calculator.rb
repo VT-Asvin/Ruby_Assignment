@@ -1,6 +1,5 @@
-class Calculatore
+class Calculatores
   attr_accessor :num1,:num2
-  gfh
   def initialize(num1,num2)
     @num1 = num1
     @num2 = num2
