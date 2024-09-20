@@ -53,3 +53,4 @@ puts "exponentiation : #{ calc.exponentiate }"
 puts "modulo : #{ calc.modulo }"
 puts "Num1: #{calc.disp}"
 puts "Num2: #{calc.disp}"
+"hau".length
