@@ -4,9 +4,9 @@ class Shop
 
   def initialize 
     puts  "Grace Departmental Store"
-    @amounts={}
+    @amounts=Hash.new(0)
     @savings=0
-    @product_prize=0
+    @product_price=0
     @exchange_amts = Hash.new(0)
     deposit
     @amounts.sort_by{ |amts,counts| amts }.reverse!
@@ -39,11 +39,10 @@ class Shop
    puts"_"*17
  end
 
- def store_cash_from_customer(user_amt,user_total)
+ def store_cash_from_customer(user_amt)
     user_amt.each{
       |amt|
       @amounts[amt.to_i]=@amounts[amt.to_i]+1
-      user_total-=amt.to_i
        @exchange_amts[amt.to_i]=@exchange_amts[amt.to_i]+1
       @savings+=amt.to_i
     }
@@ -57,25 +56,15 @@ class Shop
   
    return "The banker has insufficent amt for exchange" if @savings<user_amt
 
-   puts "printing amounts#{@amounts}"
+ #  puts "printing amounts#{@amounts}"
    @amounts.each do |amt,counts|
             break if(user_amt==0)
+            next if counts.zero?
             possible_amt=user_amt/amt
-            if(counts!=0)
-                     if(counts>=possible_amt)
-                            @amounts[amt]=counts-possible_amt
-                            @savings-=possible_amt*amt
-                            user_amt-=possible_amt*amt
-                            # @exchange_amts[amt]=possible_amt
-                     elsif(counts<possible_amt)
-                           @amounts[amt]=0
-                           @savings-=counts*amt
-                           user_amt-=counts*amt
-                            # @exchange_amts[amt]=counts
-                      end
-       
-            end
-      
+            used_amt=[counts,possible_amt].min
+            @amounts[amt]-=used_amt
+            @savings-=used_amt*amt
+            user_amt-=used_amt*amt
       end
     return "The cashier has enough amt but he dont have enough change
             Please bring exact change#{revert_transaction}" if user_amt!=0
@@ -106,7 +95,7 @@ end
      puts "The customer has insuffiecent amt"
  else
     # puts "user amounts#{user_amt}"
-     s.store_cash_from_customer(user_amt,user_total)
+     s.store_cash_from_customer(user_amt)
      change=(s.product_price-user_total).abs
      puts "The cashier needs to give change of #{change}.Rs to customer"
   if change!=0
