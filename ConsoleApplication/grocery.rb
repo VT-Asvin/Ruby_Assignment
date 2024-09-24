@@ -1,7 +1,12 @@
 class Shop
   NOTES=[500,100,50,20,10,5,2,1].freeze
+  PRODUCTS={
+     "curd"=>20,
+     "milk"=>30,
+     "biscut"=>50
+ }.freeze
   attr_accessor :product_price
-
+ 
   def initialize 
     puts  "Grace Departmental Store"
     @amounts=Hash.new(0)
@@ -9,6 +14,7 @@ class Shop
     @product_price=0
     @exchange_amts = Hash.new(0)
     deposit
+    @revert_store_cash=Hash.new(0)
     @amounts.sort_by{ |amts,counts| amts }.reverse!
     puts "#{@amounts}"
   end
@@ -63,6 +69,7 @@ class Shop
             possible_amt=user_amt/amt
             used_amt=[counts,possible_amt].min
             @amounts[amt]-=used_amt
+            @revert_store_cash[amt]+=used_amt
             @savings-=used_amt*amt
             user_amt-=used_amt*amt
       end
@@ -78,7 +85,12 @@ class Shop
     @amounts[amt]=@amounts[amt]-count
     @savings-= amt*count
    }
-   puts "After Transaction Failed the saving of store is #{@savings}"
+   @revert_store_cash.each{
+    |amt,count|
+    @amounts[amt]+=count
+    @savings+=amt*count
+   }
+   puts "After Transaction Failed the saving of store is #{@savings} and revert_stor_cash is #{@revert_store_cash}"
  end
 
 
@@ -86,22 +98,50 @@ end
 
 
  s= Shop.new
- puts "Enter the product Price"
- s.product_price = gets.chomp.to_i
- puts "Enter the denominations given by the customer with comma separated values(,)"
- user_amt=gets.chomp.split(",")
- user_total=user_amt.sum{|amt| amt.to_i}
- if (user_total<s.product_price)
-     puts "The customer has insuffiecent amt"
- else
-    # puts "user amounts#{user_amt}"
-     s.store_cash_from_customer(user_amt)
-     change=(s.product_price-user_total).abs
-     puts "The cashier needs to give change of #{change}.Rs to customer"
-  if change!=0
-     puts s.need_of_changes(change)
-  else
-     puts "The customer has purchased the product and Bill Generated"
-  end
+ loop do
+   puts "Enter your choice"
+   puts "1.view products"
+   puts "2.purchase products"
+   puts "3.exit"
+   choice=gets.chomp.to_i
+   case choice
+   when 1 
+      puts" you have selected choice 1.view products"
+      puts "PRODUCTS #{Shop::PRODUCTS}"
+   when 2
+     puts" you have selected choice 2.purchase products"
+     puts "From the products Enter your items with comma(,) separated values #{Shop::PRODUCTS}"
+     customer_wishlist=gets.chomp.split(",")
+     proudtcs_costs=0
+     customer_wishlist.each{
+      |item|
+       proudtcs_costs+=Shop::PRODUCTS[item]
+     }
+     puts "The cost of your total products is:#{proudtcs_costs}"
 
+      
+    # puts "Enter the product Price"
+    # s.product_price = gets.chomp.to_i
+     puts "Enter the denominations given by the customer with comma separated values(,)"
+     user_amt=gets.chomp.split(",")
+     user_total=user_amt.sum{|amt| amt.to_i}
+    # if (user_total<s.product_price)
+     if (user_total<proudtcs_costs)
+          puts "The customer has insuffiecent amt"
+     else
+          # puts "user amounts#{user_amt}"
+          s.store_cash_from_customer(user_amt)
+          #change=(s.product_price-user_total).abs
+          change=(proudtcs_costs-user_total).abs
+          puts "The cashier needs to give change of #{change}.Rs to customer"
+          if change!=0
+              puts s.need_of_changes(change)
+          else
+              puts "The customer has purchased the product and Bill Generated"
+            end
+          end
+        else
+          puts "Customer exited"
+          break
+        end
 end
