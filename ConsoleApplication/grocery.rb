@@ -73,13 +73,12 @@ class Shop
             @savings-=used_amt*amt
             user_amt-=used_amt*amt
       end
-    return "The cashier has enough amt but he dont have enough change
-            Please bring exact change#{revert_transaction}" if user_amt!=0
-   puts "The stores savings is : #{@savings}"
+    return "Please bring exact change#{revert_transaction}" if user_amt!=0
+    puts "The stores savings is : #{@savings}"
  end
 
  def revert_transaction
-#  puts "Exhange #{@exchange_amts}"
+
    @exchange_amts.each{
     |amt,count|
     @amounts[amt]=@amounts[amt]-count
@@ -90,7 +89,7 @@ class Shop
     @amounts[amt]+=count
     @savings+=amt*count
    }
-   puts "After Transaction Failed the saving of store is #{@savings} and revert_stor_cash is #{@revert_store_cash}"
+   puts "After Transaction Failed the savings of store is #{@savings} and revert_stor_cash is #{@revert_store_cash}"
  end
 
 
@@ -118,20 +117,16 @@ end
        proudtcs_costs+=Shop::PRODUCTS[item]
      }
      puts "The cost of your total products is:#{proudtcs_costs}"
-
-      
-    # puts "Enter the product Price"
-    # s.product_price = gets.chomp.to_i
      puts "Enter the denominations given by the customer with comma separated values(,)"
      user_amt=gets.chomp.split(",")
      user_total=user_amt.sum{|amt| amt.to_i}
-    # if (user_total<s.product_price)
+
      if (user_total<proudtcs_costs)
           puts "The customer has insuffiecent amt"
      else
-          # puts "user amounts#{user_amt}"
+          
           s.store_cash_from_customer(user_amt)
-          #change=(s.product_price-user_total).abs
+        
           change=(proudtcs_costs-user_total).abs
           puts "The cashier needs to give change of #{change}.Rs to customer"
           if change!=0
