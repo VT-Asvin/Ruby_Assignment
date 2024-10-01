@@ -7,11 +7,12 @@
   #         @right = right
   #     end
   # end
+  #improved readability
 def invert_tree(root)
-  return root if( root ==nil) 
-  left_node= invert_tree(root.left)
-  right_node=invert_tree(root.right)
-  root.left=right_node
-  root.right=left_node
+  return root if( root == nil) 
+  left_node  = invert_tree( root.left )
+  right_node = invert_tree( root.right )
+  root.left  = right_node
+  root.right = left_node
   return root
 end
