@@ -41,4 +41,7 @@ module Config
       puts middle_row.strip
       puts bottom_row.strip
     end
+    def valid_choice?(choice)
+      ['1', '2'].include?(choice)
+    end
 end

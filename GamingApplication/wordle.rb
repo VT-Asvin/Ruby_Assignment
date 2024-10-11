@@ -7,16 +7,21 @@ class Wordle
   def initialize
     start_game
   end
-
+  
   def start_game
      puts "Welcome to the Wordle Game"
      puts "="*27
      puts "Enter your choice"
      puts "1.view Game rules"
      puts "2.start Game"
-     user_choice=gets.chomp.to_i
-    puts Config::RULES if user_choice==1
-    user_guessing
+     user_choice=gets.chomp
+     if valid_choice?(user_choice)
+         puts Config::RULES if user_choice.to_i==1
+         user_guessing
+     else 
+         puts Rainbow("Invalid Choice.Please Enter  1 or 2").red
+         start_game
+     end
   end
   
   def user_guessing
@@ -26,7 +31,7 @@ class Wordle
       guessed_word=gets.chomp.split("")
       if guessed_word.size!=5 
        
-        puts "Sorry,Enter 5 letter word!!"
+        puts Rainbow("Sorry,Enter 5 letter word!!").red
         next
       end
       user_attempts+=1
@@ -37,26 +42,26 @@ class Wordle
   
 
   def feedback(guessed_word)
-  
      return true if guessed_word.join("")== Config::WORD   
      hints=[]
+     
      guessed_word.each_with_index{
       |letter,position|
        lettercount=guessed_word[0 .. position].count(letter)
-      if Config::WORD[position]==letter
-       hints<<(letter.green+"")
-      elsif !Config::WORD.include?(letter)|| (Config::WORD.include?(letter) &&  lettercount> Config::OCURRENCE_COUNT[letter+""] )
+      
+      if !Config::WORD.include?(letter)|| (Config::WORD.include?(letter) &&  lettercount> Config::OCURRENCE_COUNT[letter+""] )
        hints<<(Rainbow(letter).red)
+      elsif Config::WORD[position]==letter
+        hints<<(letter.green+"")
       elsif Config::WORD[position]!=letter
        hints<<(letter.yellow+"")
       
       end
-
      }
-
      display_boxed_word( hints)
      false
   end
+
 
 end
 

@@ -63,3 +63,7 @@
 # puts h 
 
 
+def ret_hash
+    
+    return {'a'=>'hello', 'b'=>'goodbye', 'c'=>'fare thee well'}
+end
