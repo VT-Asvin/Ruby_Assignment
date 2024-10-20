@@ -65,6 +65,7 @@ output_prefix = "output_"
 #   end
 # end
 
+
  #Using File.readlines
 profile("File.readlines") do
   lines = File.readlines("large_1G.txt")

@@ -2,8 +2,11 @@ require_relative  'config'
 require 'rainbow/refinement'
 using Rainbow
 require 'dictionary'
+
 class Wordle
+
   include Config
+  
   def initialize
     start_game
   end
@@ -17,14 +20,14 @@ class Wordle
      user_choice=gets.chomp
      if valid_choice?(user_choice)
          puts Config::RULES if user_choice.to_i==1
-         user_guessing
+         get_user_guesses
      else 
          puts Rainbow("Invalid Choice.Please Enter  1 or 2").red
          start_game
      end
   end
   
-  def user_guessing
+  def get_user_guesses
      user_attempts=1
      loop do
       puts "Attempt :#{user_attempts},Enter your Guessing Word must be 5 letters"
@@ -35,13 +38,13 @@ class Wordle
         next
       end
       user_attempts+=1
-      return puts "WELL DONE! YOU HAVE GUESSED CORRECTLY" if  feedback(guessed_word)
+      return puts "WELL DONE! YOU HAVE GUESSED CORRECTLY" if  validate_user_guessing(guessed_word)
       return  puts "Sorry! You have exceed the attempts" if user_attempts>=Config::MAX_ATTEMPTS 
      end
   end
   
 
-  def feedback(guessed_word)
+  def validate_user_guessing(guessed_word)
      return true if guessed_word.join("")== Config::WORD   
      hints=[]
      
@@ -50,7 +53,7 @@ class Wordle
        lettercount=guessed_word[0 .. position].count(letter)
       
       if !Config::WORD.include?(letter)|| (Config::WORD.include?(letter) &&  lettercount> Config::OCURRENCE_COUNT[letter+""] )
-       hints<<(Rainbow(letter).red)
+       hints <<(Rainbow(letter).red)
       elsif Config::WORD[position]==letter
         hints<<(letter.green+"")
       elsif Config::WORD[position]!=letter
